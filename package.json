@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "vuepress dev"
+    "start": "vuepress dev",
+    "build": "vuepress build"
   },
   "dependencies": {
     "vue": "^2.5.17"
