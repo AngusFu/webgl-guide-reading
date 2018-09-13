@@ -40,15 +40,27 @@ module.exports = {
     lastUpdated: '上次更新',
     serviceWorker: {
       updatePopup: {
-        message: "发现新内容可用",
-        buttonText: "刷新"
+        message: '发现新内容可用',
+        buttonText: '刷新'
       }
     },
     nav: [
-      {
-        text: '阅读',
-        link: '/content/',
-      }
+      // {
+      //   text: '阅读',
+      //   link: '/content/'
+      // }
+    ],
+    sidebar: [
+      group('写在前面', ['/']),
+      group('基础部分', ['/content/chapter-1', '/content/chapter-2'])
     ]
+  }
+}
+
+function group (title, children) {
+  return {
+    title,
+    children,
+    collapsable: false
   }
 }
