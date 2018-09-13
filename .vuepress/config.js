@@ -25,7 +25,7 @@ const webpackConfigs = {
 
 module.exports = {
   ...webpackConfigs,
-  base: '/webgl-guide-reading',
+  base: '/webgl-guide-reading/',
   dest: 'docs',
   title: 'WebGL Reading',
   description: '《WebGL 编程指南》读书笔记',
