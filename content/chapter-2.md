@@ -228,6 +228,199 @@ gl.drawArrays(gl.POINTS, 0, 1)
 <img src="https://ws2.sinaimg.cn/large/0069RVTdly1fv8cc6m6gwj30q80pkwef.jpg" style="max-width: 400px" />
 
 
+## 使用变量
+
+### attribute 变量
+
+传输与顶点相关的数据。**只有顶点着色器中可以使用。**
+
+使用步骤：
+
+1. 在顶点着色器中声明变量，并将其赋值给 `gl_Position`
+2. 在 JS 中获取变量存储的位置：`gl.getAttribLocation(program, varName)`
+3. 在 JS 中向变量传输数据：`gl.vertexAttrib3f(pos, x, y, z)`
+
+```html
+@playground
+<template>
+  <canvas width=100 height=100></canvas>
+</template>
+
+<script>
+export default {
+  mounted () {
+    const gl = this.$el.getContext('webgl')
+    const vertexShader = `
+      // 声明变量
+      attribute vec4 a_Position;
+      void main() {
+        // 赋值给 gl_Position
+        gl_Position = a_Position;
+        gl_PointSize = 10.0;
+      }
+    `
+    const fragmentShader = `void main() {
+      gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+    }`
+
+    initShaderProgram(gl, vertexShader, fragmentShader)
+
+    // 获取变量存储位置
+    const a_Position = gl.getAttribLocation(gl.program, 'a_Position')
+
+    // 若 a_Position 为 -1，则说明获取的变量不存在
+    // 或者变量名以 gl_ 或 webgl_ 开头
+    if (a_Position < 0) {
+      console.error(`获取 a_Position 位置错误`)
+      return
+    }
+
+    // 传输顶点数据
+    gl.vertexAttrib3f(a_Position, 0.0, 0.0, 0.0)
+
+    // 设置背景色
+    gl.clearColor(0.0, 0.0, 0.0, 1.0)
+    // 使用背景色清空 canvas
+    gl.clear(gl.COLOR_BUFFER_BIT)
+    // 绘制
+    gl.drawArrays(gl.POINTS, 0, 1)
+  }
+}
+</script>
+```
+
+`gl.vertexAttrib...` 方法分为两大类：
+
+1. `gl.vertexAttrib${n}f`，n = 1, 2, 3, 4
+2. `gl.vertexAttrib${n}fv`，n = 1, 2, 3, 4
+
+使用如下：
+
+1. `gl.vertexAttrib4f(program, 0.0, 0.0, 0.0, 1.0)`
+2. `gl.vertexAttrib4fv(program, new Float32Array([0.0, 0.0, 0.0, 1.0]))`
+
+```html
+@playground
+<template>
+  <canvas width=100 height=100></canvas>
+</template>
+
+<script>
+export default {
+  mounted () {
+    const gl = this.$el.getContext('webgl')
+    const vertexShader = `
+      attribute vec4 a_Position;
+      attribute float a_PointSize;
+      void main() {
+        gl_Position = a_Position;
+        gl_PointSize = a_PointSize;
+      }
+    `
+    const fragmentShader = `void main() {
+      gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+    }`
+
+    initShaderProgram(gl, vertexShader, fragmentShader)
+
+    const getLocation = function (name) {
+      const location = gl.getAttribLocation(gl.program, name)
+      if (location < 0) {
+        throw `获取 ${name} 位置错误`
+      }
+      return location
+    }
+
+    const a_PointSize = getLocation('a_PointSize')
+    gl.vertexAttrib1f(a_PointSize, 18.0)
+
+    const a_Position = getLocation('a_Position')
+    gl.vertexAttrib4fv(a_Position, new Float32Array([ 0.0, 0.0, 0.0, 1.0 ]))
+
+    gl.clearColor(0.0, 0.0, 0.0, 1.0)
+    gl.clear(gl.COLOR_BUFFER_BIT)
+    gl.drawArrays(gl.POINTS, 0, 1)
+  }
+}
+</script>
+```
+
+
+
+```html
+@playground
+<template>
+  <canvas width=100 height=100 @click="handleClick"></canvas>
+</template>
+
+<script>
+export default {
+  mounted () {
+    const gl = this.$el.getContext('webgl')
+    const vertexShader = `
+      attribute vec4 a_Position;
+      void main() {
+        gl_Position = a_Position;
+        gl_PointSize = 6.0;
+      }
+    `
+    const fragmentShader = `void main() {
+      gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+    }`
+
+    initShaderProgram(gl, vertexShader, fragmentShader)
+    gl.clearColor(0.0, 0.0, 0.0, 1.0)
+    gl.clear(gl.COLOR_BUFFER_BIT)
+
+    const a_Position = gl.getAttribLocation(gl.program, 'a_Position')
+    if (a_Position < 0) {
+      console.error(`获取 a_Position 位置错误`)
+      return
+    }
+
+    this.gl = gl
+    this.a_Position = a_Position
+  },
+
+  methods: {
+    handleClick (event) {
+      if (this.gl) {
+        const { toWebGLCord } = this
+        this.points = this.points || []
+        this.points.push(toWebGLCord(event))
+        this.drawPoints()
+      }
+    },
+
+    drawPoints () {
+      const { gl, a_Position, points } = this
+      gl.clear(gl.COLOR_BUFFER_BIT)
+
+      for (let {x, y} of points) {
+        gl.vertexAttrib2f(a_Position, x, y)
+        gl.drawArrays(gl.POINTS, 0, 1)
+      }
+    },
+
+    toWebGLCord ({ clientX, clientY }) {
+      const { width, height, left, top } = this.$el.getBoundingClientRect()
+      return {
+        x: -(left + (width / 2) - clientX) / (width / 2),
+        y: (top + (height / 2) - clientY) / (height / 2)
+      }
+    }
+  }
+}
+</script>
+```
+
+### uniform 变量
+
+传输对所有顶点都相同的（或与顶点无关的）数据。
+
+
+
+
 ## 其他参考
 
 - [3D 基本理论](https://developer.mozilla.org/zh-CN/docs/Games/Techniques/3D_on_the_web/Basic_theory)
