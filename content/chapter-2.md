@@ -345,6 +345,7 @@ export default {
 </script>
 ```
 
+下面这个 Demo 会根据鼠标点击位置绘制点 ——
 
 
 ```html
@@ -418,11 +419,112 @@ export default {
 
 传输对所有顶点都相同的（或与顶点无关的）数据。
 
+下面这个 Demo 展示了如何对不同的点显示不同的颜色 ——
+
+```html {17,18,34,61}
+@playground
+<template>
+  <canvas width=100 height=100 @click="handleClick"></canvas>
+</template>
+
+<script>
+export default {
+  mounted () {
+    const gl = this.$el.getContext('webgl')
+    const vertexShader = `
+      attribute vec4 a_Position;
+      void main() {
+        gl_Position = a_Position;
+        gl_PointSize = 6.0;
+      }
+    `
+    const fragmentShader = `
+      precision mediump float;
+      uniform vec4 u_FragColor;
+      void main() {
+        gl_FragColor = u_FragColor;
+      }
+    `
+
+    initShaderProgram(gl, vertexShader, fragmentShader)
+    gl.clearColor(0.0, 0.0, 0.0, 1.0)
+    gl.clear(gl.COLOR_BUFFER_BIT)
+
+    const a_Position = gl.getAttribLocation(gl.program, 'a_Position')
+    if (a_Position < 0) {
+      console.error(`获取 a_Position 位置错误`)
+      return
+    }
+
+    const u_FragColor = gl.getUniformLocation(gl.program, 'u_FragColor')
+    if (u_FragColor == null) {
+      console.error(`获取 u_FragColor 位置错误`)
+      return
+    }
+
+    this.gl = gl
+    this.a_Position = a_Position
+    this.u_FragColor = u_FragColor
+  },
+
+  methods: {
+    handleClick (event) {
+      if (this.gl) {
+        const { toWebGLCord } = this
+        this.points = this.points || []
+        this.points.push(toWebGLCord(event))
+        this.drawPoints()
+      }
+    },
+
+    drawPoints () {
+      const { gl, a_Position, u_FragColor, points } = this
+      gl.clear(gl.COLOR_BUFFER_BIT)
+
+      for (let {x, y} of points) {
+        gl.vertexAttrib2f(a_Position, x, y)
+        gl.uniform4f(u_FragColor, Math.abs(x), Math.abs(y), Math.abs(x - y), 1)
+        gl.drawArrays(gl.POINTS, 0, 1)
+      }
+    },
+
+    toWebGLCord ({ clientX, clientY }) {
+      const { width, height, left, top } = this.$el.getBoundingClientRect()
+      return {
+        x: -(left + (width / 2) - clientX) / (width / 2),
+        y: (top + (height / 2) - clientY) / (height / 2)
+      }
+    }
+  }
+}
+</script>
+```
+
+首先也是要声明变量 ——
+
+```glsl
+precision mediump float;
+uniform vec4 u_FragColor;
+```
+
+注意第一行的**精度限定词**。
+
+接下来的操作与 attribute 变量类似：
+
+```js
+const u_FragColor = gl.getUniformLocation(gl.program, 'u_FragColor')
+// ...
+gl.uniform4f(gl.program, ...)
+```
+
+::: warning 注意
+调用 `gl.getUniformLocation` 如果获取失败，返回的结果不再是 -1， 而是 null。
+:::
 
 ## 其他参考
 
 - [3D 基本理论](https://developer.mozilla.org/zh-CN/docs/Games/Techniques/3D_on_the_web/Basic_theory)
 - [WebGL 技术储备指南](http://taobaofed.org/blog/2015/12/21/webgl-handbook/)
 参考资料
-- https://webglfundamentals.org/webgl/lessons/zh_cn/
-- https://webgl2fundamentals.org/
+- [webglfundamentals](https://webglfundamentals.org/webgl/lessons/zh_cn/)
+- [webgl2fundamentals](https://webgl2fundamentals.org/)

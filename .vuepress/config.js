@@ -30,6 +30,9 @@ module.exports = {
   title: 'WebGL Reading',
   description: '《WebGL 编程指南》读书笔记',
   serviceWorker: true,
+  markdown: {
+    lineNumbers: true
+  },
   themeConfig: {
     repo: 'AngusFu/webgl-guide-reading',
     editLinks: true,

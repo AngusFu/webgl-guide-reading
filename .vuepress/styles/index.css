@@ -2,8 +2,13 @@ div[class~="language-glsl"]:before {
   content: 'glsl';
 }
 
-.playground > div[class~="language-html"]:before {
+.playground>div[class~="language-html"]:before {
   content: 'vue';
+}
+
+.playground>div[class*="language-"] {
+  max-height: 300px;
+  overflow: auto;
 }
 
 .clip-btn {
