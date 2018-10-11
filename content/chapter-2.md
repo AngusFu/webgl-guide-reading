@@ -232,3 +232,6 @@ gl.drawArrays(gl.POINTS, 0, 1)
 
 - [3D 基本理论](https://developer.mozilla.org/zh-CN/docs/Games/Techniques/3D_on_the_web/Basic_theory)
 - [WebGL 技术储备指南](http://taobaofed.org/blog/2015/12/21/webgl-handbook/)
+参考资料
+- https://webglfundamentals.org/webgl/lessons/zh_cn/
+- https://webgl2fundamentals.org/
