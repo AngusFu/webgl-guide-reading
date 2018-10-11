@@ -10,7 +10,8 @@ install:
 before_script:
   - echo "start"
 script:
-  - npm run publish
+  - npm run build && npx gh-pages --branch gh-pages --repo https://"$GH_TOKEN"@github.com/AngusFu/webgl-guide-reading.git  -d ./docs
+
 after_script:
   - echo "done"
 # E: Build LifeCycle
