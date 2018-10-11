@@ -419,8 +419,6 @@ export default {
 传输对所有顶点都相同的（或与顶点无关的）数据。
 
 
-
-
 ## 其他参考
 
 - [3D 基本理论](https://developer.mozilla.org/zh-CN/docs/Games/Techniques/3D_on_the_web/Basic_theory)
