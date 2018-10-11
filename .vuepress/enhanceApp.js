@@ -6,15 +6,24 @@ const clipBtn = `<button class="clip-btn" data-clipboard-snippet>
 <img class="clippy" width="13" src="${clipboardIcon}" alt="Copy to clipboard">
 </button>`
 
-export default ({ Vue, options, router, siteData }) => {
+export default ({
+  Vue,
+  options,
+  router,
+  siteData
+}) => {
   if (typeof window !== 'undefined' && window) {
     Object.assign(window, webglUtils)
   }
 
   Vue.mixin({
-    destroyed () {
-      if (this.$el instanceof HTMLCanvasElement === false) return
-      const gl = this.$el.getContext('webgl')
+    destroyed() {
+      const elem = this.$el
+      const canvas = elem instanceof HTMLCanvasElement ? elem : elem.querySelector('canvas')
+      if (!canvas) {
+        return
+      }
+      const gl = canvas.getContext('webgl')
 
       // SEE https://my.oschina.net/codingDog/blog/1839100
       if (gl.program) {
@@ -25,7 +34,7 @@ export default ({ Vue, options, router, siteData }) => {
         gl.program = null
       }
     },
-    mounted () {
+    mounted() {
       // if (this.$el instanceof HTMLElement === false) return
       // if (this.$el.classList.contains('page') === false) return
 

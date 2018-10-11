@@ -2,10 +2,12 @@
  * 说明 ——
  * theme 中的文件来源于默认样式 eject 出来的结果
  */
-const { resolve } = require('path')
+const {
+  resolve
+} = require('path')
 
 const webpackConfigs = {
-  chainWebpack (config) {
+  chainWebpack(config) {
     config.module
       .rule('pug')
       .test(/\.pug$/)
@@ -54,12 +56,16 @@ module.exports = {
     ],
     sidebar: [
       group('写在前面', ['/']),
-      group('基础部分', ['/content/chapter-1', '/content/chapter-2'])
+      group('基础部分', [
+        '/content/chapter-1',
+        '/content/chapter-2',
+        '/content/chapter-3'
+      ])
     ]
   }
 }
 
-function group (title, children) {
+function group(title, children) {
   return {
     title,
     children,
