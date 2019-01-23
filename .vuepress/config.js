@@ -49,10 +49,14 @@ module.exports = {
       }
     },
     nav: [
-      // {
-      //   text: '阅读',
-      //   link: '/content/'
-      // }
+      {
+        text: 'WebGL 编程指南',
+        link: '/'
+      },
+      {
+        text: 'ICG book',
+        link: '/icg/'
+      }
     ],
     sidebar: [
       group('写在前面', ['/']),
