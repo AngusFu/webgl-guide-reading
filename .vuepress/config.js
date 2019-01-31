@@ -2,9 +2,7 @@
  * 说明 ——
  * theme 中的文件来源于默认样式 eject 出来的结果
  */
-const {
-  resolve
-} = require('path')
+const { resolve } = require('path')
 
 const webpackConfigs = {
   chainWebpack(config) {
@@ -35,6 +33,7 @@ module.exports = {
   markdown: {
     lineNumbers: true
   },
+  plugins: [require('vuepress-plugin-playground')],
   themeConfig: {
     repo: 'AngusFu/webgl-guide-reading',
     editLinks: true,

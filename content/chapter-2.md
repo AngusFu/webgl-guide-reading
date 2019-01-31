@@ -13,20 +13,20 @@ const gl = canvas.getContext('webgl')
 ```html
 @playground
 <template>
-  <canvas width=100 height=100></canvas>
+  <canvas width="100" height="100"></canvas>
 </template>
 
 <script>
-export default {
-  mounted () {
-    // 获取绘图上下文
-    const gl = this.$el.getContext('webgl')
-    // 设置背景色
-    gl.clearColor(0.0, 0.5, 0.5, 1.0)
-    // 使用背景色清空 canvas
-    gl.clear(gl.COLOR_BUFFER_BIT)
+  export default {
+    mounted() {
+      // 获取绘图上下文
+      const gl = this.$el.getContext('webgl')
+      // 设置背景色
+      gl.clearColor(0.0, 0.5, 0.5, 1.0)
+      // 使用背景色清空 canvas
+      gl.clear(gl.COLOR_BUFFER_BIT)
+    }
   }
-}
 </script>
 ```
 
@@ -54,7 +54,6 @@ WebGL 中的缓冲区分为以下类型：
 
 如果你在控制台中打印一下，会发现缓冲区的标志 `gl.XXX_BUFFER_BIT` 的值是一个整数。如果要同时清除几种缓冲区，可以使用位运算符 `|` 来指定。
 
-
 ## 绘制点
 
 绘制步骤如下。
@@ -70,7 +69,7 @@ WebGL 中的着色器分为两类，**顶点着色器**（Vertex Shader）和 **
 着色器程序在 JavaScript 中是使用字符串编写的。在使用之前，需要对其进行编译。下面是本篇使用到的加载着色器程序的函数：
 
 ```js
-function loadShader (gl, type, source) {
+function loadShader(gl, type, source) {
   // type 代表着色器类型，可选值为 gl.VERTEX_SHADER、gl.FRAGMENT_SHADER
   const shader = gl.createShader(type)
   // 加载着色器源码
@@ -81,7 +80,9 @@ function loadShader (gl, type, source) {
   // 获取编译结果
   if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
     gl.deleteShader(shader)
-    console.error(`An error occurred compiling the shaders: ${gl.getShaderInfoLog(shader)}`)
+    console.error(
+      `An error occurred compiling the shaders: ${gl.getShaderInfoLog(shader)}`
+    )
     return null
   }
 
@@ -94,7 +95,7 @@ function loadShader (gl, type, source) {
 调用 `gl.createProgram()` 创建 program 对象，并将创建好的着色器对象附着到 program 上，然后将 program 链接到绘图上下文。下面是本篇使用到的初始化着色器函数：
 
 ```js
-function initShaderProgram (gl, vSource, fSource) {
+function initShaderProgram(gl, vSource, fSource) {
   // 创建着色器对象
   const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vSource)
   const fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fSource)
@@ -111,7 +112,11 @@ function initShaderProgram (gl, vSource, fSource) {
 
   // 获取链接状态
   if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-    console.error(`Unable to initialize the shader program: ${gl.getProgramInfoLog(program)}`)
+    console.error(
+      `Unable to initialize the shader program: ${gl.getProgramInfoLog(
+        program
+      )}`
+    )
     gl.deleteProgram(program)
     return null
   }
@@ -128,32 +133,32 @@ function initShaderProgram (gl, vSource, fSource) {
 ```html
 @playground
 <template>
-  <canvas width=100 height=100></canvas>
+  <canvas width="100" height="100"></canvas>
 </template>
 
 <script>
-export default {
-  mounted () {
-    const gl = this.$el.getContext('webgl')
-    const vertexShader = `void main() {
+  export default {
+    mounted() {
+      const gl = this.$el.getContext('webgl')
+      const vertexShader = `void main() {
       gl_Position = vec4(0.0, 0.0, 0.0, 1.0);
       gl_PointSize = 10.0;
     }`
-    const fragmentShader = `void main() {
+      const fragmentShader = `void main() {
       gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
     }`
 
-    initShaderProgram(gl, vertexShader, fragmentShader)
+      initShaderProgram(gl, vertexShader, fragmentShader)
 
-    // 设置背景色
-    gl.clearColor(0.0, 0.0, 0.0, 1.0)
-    // 使用背景色清空 canvas
-    gl.clear(gl.COLOR_BUFFER_BIT)
+      // 设置背景色
+      gl.clearColor(0.0, 0.0, 0.0, 1.0)
+      // 使用背景色清空 canvas
+      gl.clear(gl.COLOR_BUFFER_BIT)
 
-    // 绘制
-    gl.drawArrays(gl.POINTS, 0, 1)
+      // 绘制
+      gl.drawArrays(gl.POINTS, 0, 1)
+    }
   }
-}
 </script>
 ```
 
@@ -168,10 +173,10 @@ void main() {
 }
 ```
 
-| 变量名 | 类型 | 默认值 | 说明 |
-|------ |-----|-------|------|
-| `gl_Position`  |  `vec4`  | 无，必传 | 顶点位置 |
-| `gl_PointSize` |  `float` | `1.0 `  | 点的尺寸 |
+| 变量名         | 类型    | 默认值   | 说明     |
+| -------------- | ------- | -------- | -------- |
+| `gl_Position`  | `vec4`  | 无，必传 | 顶点位置 |
+| `gl_PointSize` | `float` | `1.0`    | 点的尺寸 |
 
 注意：
 
@@ -194,7 +199,6 @@ void main() {
 
 `gl_FragColor` 的值也是一个矢量，代表 RGBA 颜色值。
 
-
 ## `gl.drawArrays`
 
 我们在绘制点时，使用了 `gl.drawArrays()` 方法：
@@ -207,26 +211,24 @@ gl.drawArrays(gl.POINTS, 0, 1)
 
 - `mode` 指定绘制方式，可以接收以下常量 （参见 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/WebGLRenderingContext/drawArrays)）
 
-| 值 | 说明 |
-|----|-----|
-| `gl.POINTS` | 绘制一系列点 |
-| `gl.LINES` | 绘制一系列单独线段。每两个点作为端点，线段之间不连接 |
-| `gl.LINE_STRIP` | 绘制一系列线段，上一点连接下一点 |
-| `gl.LINE_LOOP` | 绘制一系列线段，上一点连接下一点，并且最后一点与第一个点相连 |
-| `gl.TRIANGLES` | 绘制一系列三角形。每三个点作为顶点 |
-| `gl.TRIANGLE_STRIP` | 绘制一个三角带 |
-| `gl.TRIANGLE_FAN` | 绘制一个三角扇 |
+| 值                  | 说明                                                         |
+| ------------------- | ------------------------------------------------------------ |
+| `gl.POINTS`         | 绘制一系列点                                                 |
+| `gl.LINES`          | 绘制一系列单独线段。每两个点作为端点，线段之间不连接         |
+| `gl.LINE_STRIP`     | 绘制一系列线段，上一点连接下一点                             |
+| `gl.LINE_LOOP`      | 绘制一系列线段，上一点连接下一点，并且最后一点与第一个点相连 |
+| `gl.TRIANGLES`      | 绘制一系列三角形。每三个点作为顶点                           |
+| `gl.TRIANGLE_STRIP` | 绘制一个三角带                                               |
+| `gl.TRIANGLE_FAN`   | 绘制一个三角扇                                               |
 
 - `first` 指定从哪个点开始绘制
 - `count` 指定绘制用到的点的数量
-
 
 ## WebGL 坐标系
 
 暂时可以认为 WebGL 中的坐标系是“右手坐标系”。需要注意与 2D context 的区别。
 
 <img src="https://ws2.sinaimg.cn/large/0069RVTdly1fv8cc6m6gwj30q80pkwef.jpg" style="max-width: 400px" />
-
 
 ## 使用变量
 
@@ -243,14 +245,14 @@ gl.drawArrays(gl.POINTS, 0, 1)
 ```html
 @playground
 <template>
-  <canvas width=100 height=100></canvas>
+  <canvas width="100" height="100"></canvas>
 </template>
 
 <script>
-export default {
-  mounted () {
-    const gl = this.$el.getContext('webgl')
-    const vertexShader = `
+  export default {
+    mounted() {
+      const gl = this.$el.getContext('webgl')
+      const vertexShader = `
       // 声明变量
       attribute vec4 a_Position;
       void main() {
@@ -259,33 +261,33 @@ export default {
         gl_PointSize = 10.0;
       }
     `
-    const fragmentShader = `void main() {
+      const fragmentShader = `void main() {
       gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
     }`
 
-    initShaderProgram(gl, vertexShader, fragmentShader)
+      initShaderProgram(gl, vertexShader, fragmentShader)
 
-    // 获取变量存储位置
-    const a_Position = gl.getAttribLocation(gl.program, 'a_Position')
+      // 获取变量存储位置
+      const a_Position = gl.getAttribLocation(gl.program, 'a_Position')
 
-    // 若 a_Position 为 -1，则说明获取的变量不存在
-    // 或者变量名以 gl_ 或 webgl_ 开头
-    if (a_Position < 0) {
-      console.error(`获取 a_Position 位置错误`)
-      return
+      // 若 a_Position 为 -1，则说明获取的变量不存在
+      // 或者变量名以 gl_ 或 webgl_ 开头
+      if (a_Position < 0) {
+        console.error(`获取 a_Position 位置错误`)
+        return
+      }
+
+      // 传输顶点数据
+      gl.vertexAttrib3f(a_Position, 0.0, 0.0, 0.0)
+
+      // 设置背景色
+      gl.clearColor(0.0, 0.0, 0.0, 1.0)
+      // 使用背景色清空 canvas
+      gl.clear(gl.COLOR_BUFFER_BIT)
+      // 绘制
+      gl.drawArrays(gl.POINTS, 0, 1)
     }
-
-    // 传输顶点数据
-    gl.vertexAttrib3f(a_Position, 0.0, 0.0, 0.0)
-
-    // 设置背景色
-    gl.clearColor(0.0, 0.0, 0.0, 1.0)
-    // 使用背景色清空 canvas
-    gl.clear(gl.COLOR_BUFFER_BIT)
-    // 绘制
-    gl.drawArrays(gl.POINTS, 0, 1)
   }
-}
 </script>
 ```
 
@@ -302,14 +304,14 @@ export default {
 ```html
 @playground
 <template>
-  <canvas width=100 height=100></canvas>
+  <canvas width="100" height="100"></canvas>
 </template>
 
 <script>
-export default {
-  mounted () {
-    const gl = this.$el.getContext('webgl')
-    const vertexShader = `
+  export default {
+    mounted() {
+      const gl = this.$el.getContext('webgl')
+      const vertexShader = `
       attribute vec4 a_Position;
       attribute float a_PointSize;
       void main() {
@@ -317,101 +319,100 @@ export default {
         gl_PointSize = a_PointSize;
       }
     `
-    const fragmentShader = `void main() {
+      const fragmentShader = `void main() {
       gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
     }`
 
-    initShaderProgram(gl, vertexShader, fragmentShader)
+      initShaderProgram(gl, vertexShader, fragmentShader)
 
-    const getLocation = function (name) {
-      const location = gl.getAttribLocation(gl.program, name)
-      if (location < 0) {
-        throw `获取 ${name} 位置错误`
+      const getLocation = function(name) {
+        const location = gl.getAttribLocation(gl.program, name)
+        if (location < 0) {
+          throw `获取 ${name} 位置错误`
+        }
+        return location
       }
-      return location
+
+      const a_PointSize = getLocation('a_PointSize')
+      gl.vertexAttrib1f(a_PointSize, 18.0)
+
+      const a_Position = getLocation('a_Position')
+      gl.vertexAttrib4fv(a_Position, new Float32Array([0.0, 0.0, 0.0, 1.0]))
+
+      gl.clearColor(0.0, 0.0, 0.0, 1.0)
+      gl.clear(gl.COLOR_BUFFER_BIT)
+      gl.drawArrays(gl.POINTS, 0, 1)
     }
-
-    const a_PointSize = getLocation('a_PointSize')
-    gl.vertexAttrib1f(a_PointSize, 18.0)
-
-    const a_Position = getLocation('a_Position')
-    gl.vertexAttrib4fv(a_Position, new Float32Array([ 0.0, 0.0, 0.0, 1.0 ]))
-
-    gl.clearColor(0.0, 0.0, 0.0, 1.0)
-    gl.clear(gl.COLOR_BUFFER_BIT)
-    gl.drawArrays(gl.POINTS, 0, 1)
   }
-}
 </script>
 ```
 
 下面这个 Demo 会根据鼠标点击位置绘制点 ——
 
-
 ```html
 @playground
 <template>
-  <canvas width=100 height=100 @click="handleClick"></canvas>
+  <canvas width="100" height="100" @click="handleClick"></canvas>
 </template>
 
 <script>
-export default {
-  mounted () {
-    const gl = this.$el.getContext('webgl')
-    const vertexShader = `
+  export default {
+    mounted() {
+      const gl = this.$el.getContext('webgl')
+      const vertexShader = `
       attribute vec4 a_Position;
       void main() {
         gl_Position = a_Position;
         gl_PointSize = 6.0;
       }
     `
-    const fragmentShader = `void main() {
+      const fragmentShader = `void main() {
       gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
     }`
 
-    initShaderProgram(gl, vertexShader, fragmentShader)
-    gl.clearColor(0.0, 0.0, 0.0, 1.0)
-    gl.clear(gl.COLOR_BUFFER_BIT)
-
-    const a_Position = gl.getAttribLocation(gl.program, 'a_Position')
-    if (a_Position < 0) {
-      console.error(`获取 a_Position 位置错误`)
-      return
-    }
-
-    this.gl = gl
-    this.a_Position = a_Position
-  },
-
-  methods: {
-    handleClick (event) {
-      if (this.gl) {
-        const { toWebGLCord } = this
-        this.points = this.points || []
-        this.points.push(toWebGLCord(event))
-        this.drawPoints()
-      }
-    },
-
-    drawPoints () {
-      const { gl, a_Position, points } = this
+      initShaderProgram(gl, vertexShader, fragmentShader)
+      gl.clearColor(0.0, 0.0, 0.0, 1.0)
       gl.clear(gl.COLOR_BUFFER_BIT)
 
-      for (let {x, y} of points) {
-        gl.vertexAttrib2f(a_Position, x, y)
-        gl.drawArrays(gl.POINTS, 0, 1)
+      const a_Position = gl.getAttribLocation(gl.program, 'a_Position')
+      if (a_Position < 0) {
+        console.error(`获取 a_Position 位置错误`)
+        return
       }
+
+      this.gl = gl
+      this.a_Position = a_Position
     },
 
-    toWebGLCord ({ clientX, clientY }) {
-      const { width, height, left, top } = this.$el.getBoundingClientRect()
-      return {
-        x: -(left + (width / 2) - clientX) / (width / 2),
-        y: (top + (height / 2) - clientY) / (height / 2)
+    methods: {
+      handleClick(event) {
+        if (this.gl) {
+          const { toWebGLCord } = this
+          this.points = this.points || []
+          this.points.push(toWebGLCord(event))
+          this.drawPoints()
+        }
+      },
+
+      drawPoints() {
+        const { gl, a_Position, points } = this
+        gl.clear(gl.COLOR_BUFFER_BIT)
+
+        for (let { x, y } of points) {
+          gl.vertexAttrib2f(a_Position, x, y)
+          gl.drawArrays(gl.POINTS, 0, 1)
+        }
+      },
+
+      toWebGLCord({ clientX, clientY }) {
+        const { width, height, left, top } = this.$el.getBoundingClientRect()
+        return {
+          x: -(left + width / 2 - clientX) / (width / 2),
+          y: (top + height / 2 - clientY) / (height / 2)
+        }
       }
     }
   }
-}
 </script>
 ```
 
@@ -424,21 +425,21 @@ export default {
 ```html {17,18,34,61}
 @playground
 <template>
-  <canvas width=100 height=100 @click="handleClick"></canvas>
+  <canvas width="100" height="100" @click="handleClick"></canvas>
 </template>
 
 <script>
-export default {
-  mounted () {
-    const gl = this.$el.getContext('webgl')
-    const vertexShader = `
+  export default {
+    mounted() {
+      const gl = this.$el.getContext('webgl')
+      const vertexShader = `
       attribute vec4 a_Position;
       void main() {
         gl_Position = a_Position;
         gl_PointSize = 6.0;
       }
     `
-    const fragmentShader = `
+      const fragmentShader = `
       precision mediump float;
       uniform vec4 u_FragColor;
       void main() {
@@ -446,57 +447,63 @@ export default {
       }
     `
 
-    initShaderProgram(gl, vertexShader, fragmentShader)
-    gl.clearColor(0.0, 0.0, 0.0, 1.0)
-    gl.clear(gl.COLOR_BUFFER_BIT)
-
-    const a_Position = gl.getAttribLocation(gl.program, 'a_Position')
-    if (a_Position < 0) {
-      console.error(`获取 a_Position 位置错误`)
-      return
-    }
-
-    const u_FragColor = gl.getUniformLocation(gl.program, 'u_FragColor')
-    if (u_FragColor == null) {
-      console.error(`获取 u_FragColor 位置错误`)
-      return
-    }
-
-    this.gl = gl
-    this.a_Position = a_Position
-    this.u_FragColor = u_FragColor
-  },
-
-  methods: {
-    handleClick (event) {
-      if (this.gl) {
-        const { toWebGLCord } = this
-        this.points = this.points || []
-        this.points.push(toWebGLCord(event))
-        this.drawPoints()
-      }
-    },
-
-    drawPoints () {
-      const { gl, a_Position, u_FragColor, points } = this
+      initShaderProgram(gl, vertexShader, fragmentShader)
+      gl.clearColor(0.0, 0.0, 0.0, 1.0)
       gl.clear(gl.COLOR_BUFFER_BIT)
 
-      for (let {x, y} of points) {
-        gl.vertexAttrib2f(a_Position, x, y)
-        gl.uniform4f(u_FragColor, Math.abs(x), Math.abs(y), Math.abs(x - y), 1)
-        gl.drawArrays(gl.POINTS, 0, 1)
+      const a_Position = gl.getAttribLocation(gl.program, 'a_Position')
+      if (a_Position < 0) {
+        console.error(`获取 a_Position 位置错误`)
+        return
       }
+
+      const u_FragColor = gl.getUniformLocation(gl.program, 'u_FragColor')
+      if (u_FragColor == null) {
+        console.error(`获取 u_FragColor 位置错误`)
+        return
+      }
+
+      this.gl = gl
+      this.a_Position = a_Position
+      this.u_FragColor = u_FragColor
     },
 
-    toWebGLCord ({ clientX, clientY }) {
-      const { width, height, left, top } = this.$el.getBoundingClientRect()
-      return {
-        x: -(left + (width / 2) - clientX) / (width / 2),
-        y: (top + (height / 2) - clientY) / (height / 2)
+    methods: {
+      handleClick(event) {
+        if (this.gl) {
+          const { toWebGLCord } = this
+          this.points = this.points || []
+          this.points.push(toWebGLCord(event))
+          this.drawPoints()
+        }
+      },
+
+      drawPoints() {
+        const { gl, a_Position, u_FragColor, points } = this
+        gl.clear(gl.COLOR_BUFFER_BIT)
+
+        for (let { x, y } of points) {
+          gl.vertexAttrib2f(a_Position, x, y)
+          gl.uniform4f(
+            u_FragColor,
+            Math.abs(x),
+            Math.abs(y),
+            Math.abs(x - y),
+            1
+          )
+          gl.drawArrays(gl.POINTS, 0, 1)
+        }
+      },
+
+      toWebGLCord({ clientX, clientY }) {
+        const { width, height, left, top } = this.$el.getBoundingClientRect()
+        return {
+          x: -(left + width / 2 - clientX) / (width / 2),
+          y: (top + height / 2 - clientY) / (height / 2)
+        }
       }
     }
   }
-}
 </script>
 ```
 
@@ -525,6 +532,6 @@ gl.uniform4f(gl.program, ...)
 
 - [3D 基本理论](https://developer.mozilla.org/zh-CN/docs/Games/Techniques/3D_on_the_web/Basic_theory)
 - [WebGL 技术储备指南](http://taobaofed.org/blog/2015/12/21/webgl-handbook/)
-参考资料
+  参考资料
 - [webglfundamentals](https://webglfundamentals.org/webgl/lessons/zh_cn/)
 - [webgl2fundamentals](https://webgl2fundamentals.org/)
