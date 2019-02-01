@@ -20,6 +20,6 @@
     "pug-plain-loader": "^1.0.0",
     "sass-loader": "^7.0.3",
     "vuepress": "^1.0.0-alpha.35",
-    "vuepress-plugin-playground": "^1.0.4"
+    "vuepress-plugin-playground": "^1.1.2"
   }
 }
