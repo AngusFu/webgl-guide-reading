@@ -6,10 +6,11 @@ div[class~='language-glsl']:before {
   content: 'vue';
 }
 
+/*
 .playground > div[class*='language-'] {
-  max-height: 300px;
+  max-height: 500px;
   overflow: auto;
-}
+}*/
 
 .clip-btn {
   transition: opacity 0.3s ease-in-out;

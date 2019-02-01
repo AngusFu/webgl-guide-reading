@@ -12,4 +12,4 @@ sidebar: auto
 
 ### Sierpinski Gasket
 
-<<< @/icg/chapter2/gasket.vue
+<<< @/icg/.demo/gasket.vue

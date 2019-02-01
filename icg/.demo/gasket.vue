@@ -1,6 +1,6 @@
 @playground
 <template>
-  <canvas width="400" height="400"></canvas>
+  <canvas width="200" height="200"></canvas>
 </template>
 
 <script>
