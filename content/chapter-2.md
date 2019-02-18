@@ -141,12 +141,12 @@ function initShaderProgram(gl, vSource, fSource) {
     mounted() {
       const gl = this.$el.getContext('webgl')
       const vertexShader = `void main() {
-      gl_Position = vec4(0.0, 0.0, 0.0, 1.0);
-      gl_PointSize = 10.0;
-    }`
+        gl_Position = vec4(0.0, 0.0, 0.0, 1.0);
+        gl_PointSize = 10.0;
+      }`
       const fragmentShader = `void main() {
-      gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
-    }`
+        gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+      }`
 
       this.initShaderProgram(gl, vertexShader, fragmentShader)
 
@@ -253,17 +253,17 @@ gl.drawArrays(gl.POINTS, 0, 1)
     mounted() {
       const gl = this.$el.getContext('webgl')
       const vertexShader = `
-      // 声明变量
-      attribute vec4 a_Position;
-      void main() {
-        // 赋值给 gl_Position
-        gl_Position = a_Position;
-        gl_PointSize = 10.0;
-      }
-    `
+        // 声明变量
+        attribute vec4 a_Position;
+        void main() {
+          // 赋值给 gl_Position
+          gl_Position = a_Position;
+          gl_PointSize = 10.0;
+        }
+      `
       const fragmentShader = `void main() {
-      gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
-    }`
+        gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+      }`
 
       this.initShaderProgram(gl, vertexShader, fragmentShader)
 
@@ -312,16 +312,16 @@ gl.drawArrays(gl.POINTS, 0, 1)
     mounted() {
       const gl = this.$el.getContext('webgl')
       const vertexShader = `
-      attribute vec4 a_Position;
-      attribute float a_PointSize;
-      void main() {
-        gl_Position = a_Position;
-        gl_PointSize = a_PointSize;
-      }
-    `
+        attribute vec4 a_Position;
+        attribute float a_PointSize;
+        void main() {
+          gl_Position = a_Position;
+          gl_PointSize = a_PointSize;
+        }
+      `
       const fragmentShader = `void main() {
-      gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
-    }`
+        gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+      }`
 
       this.initShaderProgram(gl, vertexShader, fragmentShader)
 
@@ -360,15 +360,15 @@ gl.drawArrays(gl.POINTS, 0, 1)
     mounted() {
       const gl = this.$el.getContext('webgl')
       const vertexShader = `
-      attribute vec4 a_Position;
-      void main() {
-        gl_Position = a_Position;
-        gl_PointSize = 6.0;
-      }
-    `
+        attribute vec4 a_Position;
+        void main() {
+          gl_Position = a_Position;
+          gl_PointSize = 6.0;
+        }
+      `
       const fragmentShader = `void main() {
-      gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
-    }`
+        gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+      }`
 
       this.initShaderProgram(gl, vertexShader, fragmentShader)
       gl.clearColor(0.0, 0.0, 0.0, 1.0)
@@ -440,12 +440,12 @@ gl.drawArrays(gl.POINTS, 0, 1)
       }
     `
       const fragmentShader = `
-      precision mediump float;
-      uniform vec4 u_FragColor;
-      void main() {
-        gl_FragColor = u_FragColor;
-      }
-    `
+        precision mediump float;
+        uniform vec4 u_FragColor;
+        void main() {
+          gl_FragColor = u_FragColor;
+        }
+      `
 
       this.initShaderProgram(gl, vertexShader, fragmentShader)
       gl.clearColor(0.0, 0.0, 0.0, 1.0)
