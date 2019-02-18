@@ -49,7 +49,7 @@
       }
     `
 
-      initShaderProgram(gl, vertexShader, fragmentShader)
+      this.initShaderProgram(gl, vertexShader, fragmentShader)
 
       const a_Position = gl.getAttribLocation(gl.program, 'a_Position')
       if (a_Position < 0) {

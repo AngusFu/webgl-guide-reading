@@ -247,7 +247,7 @@ sidebar: auto
 
       initProgram() {
         const gl = this.getGLContext()
-        initShaderProgram(gl, this.vertexShader, this.fragmentShader)
+        this.initShaderProgram(gl, this.vertexShader, this.fragmentShader)
 
         const a_Position = gl.getAttribLocation(gl.program, 'a_Position')
         gl.vertexAttribPointer(a_Position, 3, gl.FLOAT, false, 0, 0)
@@ -293,7 +293,7 @@ sidebar: auto
         gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
       }`
 
-    initShaderProgram(gl, vertexShader, fragmentShader)
+    this.initShaderProgram(gl, vertexShader, fragmentShader)
 
     const vertexBuffer = gl.createBuffer()
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer)

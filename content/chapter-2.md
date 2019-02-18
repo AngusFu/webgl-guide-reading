@@ -148,7 +148,7 @@ function initShaderProgram(gl, vSource, fSource) {
       gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
     }`
 
-      initShaderProgram(gl, vertexShader, fragmentShader)
+      this.initShaderProgram(gl, vertexShader, fragmentShader)
 
       // 设置背景色
       gl.clearColor(0.0, 0.0, 0.0, 1.0)
@@ -265,7 +265,7 @@ gl.drawArrays(gl.POINTS, 0, 1)
       gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
     }`
 
-      initShaderProgram(gl, vertexShader, fragmentShader)
+      this.initShaderProgram(gl, vertexShader, fragmentShader)
 
       // 获取变量存储位置
       const a_Position = gl.getAttribLocation(gl.program, 'a_Position')
@@ -323,7 +323,7 @@ gl.drawArrays(gl.POINTS, 0, 1)
       gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
     }`
 
-      initShaderProgram(gl, vertexShader, fragmentShader)
+      this.initShaderProgram(gl, vertexShader, fragmentShader)
 
       const getLocation = function(name) {
         const location = gl.getAttribLocation(gl.program, name)
@@ -370,7 +370,7 @@ gl.drawArrays(gl.POINTS, 0, 1)
       gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
     }`
 
-      initShaderProgram(gl, vertexShader, fragmentShader)
+      this.initShaderProgram(gl, vertexShader, fragmentShader)
       gl.clearColor(0.0, 0.0, 0.0, 1.0)
       gl.clear(gl.COLOR_BUFFER_BIT)
 
@@ -447,7 +447,7 @@ gl.drawArrays(gl.POINTS, 0, 1)
       }
     `
 
-      initShaderProgram(gl, vertexShader, fragmentShader)
+      this.initShaderProgram(gl, vertexShader, fragmentShader)
       gl.clearColor(0.0, 0.0, 0.0, 1.0)
       gl.clear(gl.COLOR_BUFFER_BIT)
 
