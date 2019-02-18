@@ -3,7 +3,7 @@
  * https://github.com/mdn/webgl-examples/blob/gh-pages/tutorial/sample3/webgl-demo.js
  */
 
-export function loadShader(gl, type, source) {
+function loadShader(gl, type, source) {
   const shader = gl.createShader(type)
   gl.shaderSource(shader, source)
   gl.compileShader(shader)

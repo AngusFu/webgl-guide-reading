@@ -1,14 +1,14 @@
 import * as webglUtils from './webgl-utils'
-import clipboardIcon from './assets/clipboard.svg'
+// import clipboardIcon from './assets/clipboard.svg'
 import './styles/index.css'
 
-const clipBtn = `<button class="clip-btn" data-clipboard-snippet>
-<img class="clippy" width="13" src="${clipboardIcon}" alt="Copy to clipboard">
-</button>`
+// const clipBtn = `<button class="clip-btn" data-clipboard-snippet>
+// <img class="clippy" width="13" src="${clipboardIcon}" alt="Copy to clipboard">
+// </button>`
 
 export default ({ Vue, options, router, siteData }) => {
   if (typeof window !== 'undefined' && window) {
-    Object.assign(window, webglUtils)
+    Object.assign(Vue.prototype, webglUtils)
   }
 
   Vue.mixin({
